@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Produk Online</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .produk {
+            background: white;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 200px;
+            text-align: center;
+        }
+
+        .produk h3 {
+            color: #333;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .keranjang {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        #daftarKeranjang {
+            list-style: none;
+            padding: 0;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+
+            let keranjang = [];
+
+            // Fungsi menambahkan produk ke keranjang
+            function tambahKeKeranjang(nama, harga, jumlah = 1) {
+
+                let produk = keranjang.find(item => item.nama === nama);
+
+                if (produk) {
+                    produk.jumlah += jumlah;
+                } else {
+                    keranjang.push({
+                        nama: nama,
+                        harga: harga,
+                        jumlah: jumlah
+                    });
+                }
+
+                tampilkanKeranjang();
+            }
+
+            // Fungsi menampilkan isi keranjang
+            function tampilkanKeranjang() {
+
+                $("#daftarKeranjang").empty();
+
+                let total = 0;
+
+                keranjang.forEach(function(p) {
+
+                    let subtotal = p.harga * p.jumlah;
+
+                    total += subtotal;
+
+                    $("#daftarKeranjang").append(
+                        "<li>" + p.nama + " - Rp" +
+                        p.harga.toLocaleString("id-ID") +
+                        " x " + p.jumlah +
+                        " = Rp" +
+                        subtotal.toLocaleString("id-ID") +
+                        "</li>"
+                    );
+                });
+
+                $("#totalHarga").text(
+                    "Rp" + total.toLocaleString("id-ID")
+                );
+            }
+
+            // Menghubungkan tombol dengan fungsi keranjang
+            $(".tambahKeranjang").click(function() {
+
+                let nama = $(this).data("nama");
+                let harga = parseInt($(this).data("harga"));
+
+                tambahKeKeranjang(nama, harga, 1);
+
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+
+    <h1>Daftar Produk Online</h1>
+
+    <p style="text-align: center;">
+        Silakan pilih produk yang ingin Anda beli.
+    </p>
+
+    <div class="container">
+
+        <div class="produk">
+            <h3>Mouse Wireless</h3>
+            <p>Harga: Rp150.000</p>
+
+            <input type="number" class="jumlah"
+                   value="1" min="1">
+
+            <button type="button"
+                    class="tambahKeranjang"
+                    data-nama="Mouse Wireless"
+                    data-harga="150000">
+                Tambah ke Keranjang
+            </button>
+        </div>
+
+        <div class="produk">
+            <h3>Keyboard</h3>
+            <p>Harga: Rp200.000</p>
+
+            <input type="number" class="jumlah"
+                   value="1" min="1">
+
+            <button type="button"
+                    class="tambahKeranjang"
+                    data-nama="Keyboard"
+                    data-harga="200000">
+                Tambah ke Keranjang
+            </button>
+        </div>
+
+        <div class="produk">
+            <h3>Mouse Bluetooth</h3>
+            <p>Harga: Rp100.000</p>
+
+            <input type="number" class="jumlah"
+                   value="1" min="1">
+
+            <button type="button"
+                    class="tambahKeranjang"
+                    data-nama="Mouse Bluetooth"
+                    data-harga="100000">
+                Tambah ke Keranjang
+            </button>
+        </div>
+
+    </div>
+
+    <div class="keranjang">
+
+        <h2>Keranjang Belanja</h2>
+
+        <ul id="daftarKeranjang"></ul>
+
+        <h3>
+            Total Harga:
+            <span id="totalHarga">Rp0</span>
+        </h3>
+
+    </div>
+
+</body>
+</html>
